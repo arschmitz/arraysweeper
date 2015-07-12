@@ -1,27 +1,50 @@
 // This just supports loading in any enviroment
 ( function( root, factory ) {
 	if ( typeof define === "function" && define.amd ) {
+		/**
+		* A module for creating an array based minesweeper game.
+		* @module ArraySweeper
+		*/
 		define( [], factory );
 	} else if ( typeof exports === "object" ) {
 		module.exports = factory();
 	} else {
-		root.ArrayCleaner = factory();
+		root.ArraySweeper = factory();
   }
 }( this, function() {
-var ArrayCleaner = function( height, width, count ) {
+/**
+* @alias module:ArraySweeper
+* @param {number} height - Height of the board to create.
+* @param {number} width - Width of the board to create.
+* @param {number} count - The number of mines to place on the board.
+*/
+var ArraySweeper = function( height, width, count ) {
 	this.height = height;
-	this.width = height;
+	this.width = width;
 	this.count = count;
 	this._buildBoard();
 };
-var arrayCleaner = {
-	count: function( row, col ) {
-		if ( this._board[ row, col ].state === "revealed" ) {
-			return this._board[ row, col ].count;
+var arraySweeper = {
+
+	/**
+	* Get the mine count for the current space
+	* @param {number} row - The row number for the space.
+	* @param {number} col - The column number for the space.
+	*/
+	mineCount: function( row, col ) {
+		if ( this._board[ row ][ col ].state === "revealed" ) {
+			return this._board[ row ][ col ].count;
 		}
 
 		return "Reveal space to see count";
 	},
+
+	/**
+	* Get or set the flag status of the space
+	* @param {number} row - The row number for the space.
+	* @param {number} col - The column number for the space.
+	* @param {boolean} state - OPTIONAL if included set the flag state for space other wise get it.
+	*/
 	flag: function( row, col, state ) {
 		if ( state === undefined ) {
 			this.count.flag++;
@@ -29,6 +52,12 @@ var arrayCleaner = {
 		}
 		this._board[ row ][ col ].state = state ? "flag" : "hidden";
 	},
+
+	/**
+	* Reveal the space
+	* @param {number} row - The row number for the space.
+	* @param {number} col - The column number for the space.
+	*/
 	reveal: function( row, col ) {
 		var space = this._board[ row ][ col ];
 
@@ -41,14 +70,30 @@ var arrayCleaner = {
 		this.count.moves++;
 		return this._reveal( row, col );
 	},
+
+	/**
+	* Render the board - This logs a textual representation to the console
+	*/
 	render: function() {
 		var board = [];
 		for ( var i = 0; i < this.height; i++ ) {
-			board.push( JSON.stringify( this._board[ i ].map( function( space ) {
-				return ( space.state === "revealed" ) ? space.count.toString() : ( space.state === "flag" ) ? "!" : "X";
-			} ) ) );
+			board.push( JSON.stringify( this._board[ i ].map( this._renderMap ) ) );
 		}
 		console.log( board.join ( ",\n" ) );
+	},
+
+	/**
+	* Get the board object - This should not be used by players only when implementing the api
+	* DONT CHEAT :-)
+	*/
+	getBoard: function() {
+		return this._board;
+	},
+
+	_renderMap: function( space ) {
+		return space.state === "revealed" ?
+			space.count.toString() :
+			( space.state === "flag" ) ? "!" : "X";
 	},
 	_getMines: function() {
 		this.mines = [];
@@ -83,7 +128,8 @@ var arrayCleaner = {
 		for ( var r = row - 1 > 0 ? row - 1 : 0; r <= row + 1; r++ ) {
 			for ( var c = col - 1 > 0 ? col - 1 : 0; c <= col + 1; c++ ) {
 				if ( r >= 0 && c >= 0 && r < this.height && c < this.width &&
-						this._board[ r ][ c ].count === 0 && this._board[ r ][ c ].state !== "revealed" &&
+						this._board[ r ][ c ].count === 0 &&
+						this._board[ r ][ c ].state !== "revealed" &&
 						!this._board[ r ][ c ].bomb && pending.indexOf( r + "," + c ) === -1 ) {
 					this._board[ r ][ c ].state = "";
 					pending.push( r + "," + c );
@@ -132,12 +178,12 @@ var arrayCleaner = {
 	}
 };
 
-var keys = Object.keys( arrayCleaner );
+var keys = Object.keys( arraySweeper );
 
 for ( var i = 0; i < keys.length; i++ ) {
-	ArrayCleaner.prototype[ keys[ i ] ] = arrayCleaner[ keys[ i ] ];
+	ArraySweeper.prototype[ keys[ i ] ] = arraySweeper[ keys[ i ] ];
 }
 
-return ArrayCleaner;
+return ArraySweeper;
 
 } ) );

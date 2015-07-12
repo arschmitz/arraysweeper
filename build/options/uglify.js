@@ -1,7 +1,7 @@
 module.exports = {
 	dist: {
 		files: {
-			"dist/minesweeper.min.js": [ "dist/minesweeper.js" ]
+			"dist/arraysweeper.min.js": [ "index.js" ]
 		}
 	}
 };

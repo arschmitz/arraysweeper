@@ -1,5 +1,5 @@
 module.exports = {
-	files: [ "*.js", "js/*.js", "build/**/*.js" ],
+	files: [ "*.js", "build/**/*.js" ],
 	options: {
 		jshintrc: ".jshintrc"
 	}
