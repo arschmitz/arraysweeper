@@ -1,7 +1,7 @@
 {
   "name": "Arraysweeper",
   "description": "A array based implementation of a minesweeper board. Can be used via a browserconsole or the command line via node JS. The main intended purpose of this is to provide the board, and logic to implement a traditional minesweeper game using the api.",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "author": {
     "name": "Alex Schmitz",
     "url": "AUTHORS.txt"
