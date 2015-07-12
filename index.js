@@ -24,7 +24,7 @@ var ArraySweeper = function( height, width, count ) {
 	this.count = count;
 	this._buildBoard();
 };
-var arraySweeper = {
+var arraysweeper = {
 
 	/**
 	* Get the mine count for the current space
@@ -178,10 +178,10 @@ var arraySweeper = {
 	}
 };
 
-var keys = Object.keys( arraySweeper );
+var keys = Object.keys( arraysweeper );
 
 for ( var i = 0; i < keys.length; i++ ) {
-	ArraySweeper.prototype[ keys[ i ] ] = arraySweeper[ keys[ i ] ];
+	ArraySweeper.prototype[ keys[ i ] ] = arraysweeper[ keys[ i ] ];
 }
 
 return ArraySweeper;
