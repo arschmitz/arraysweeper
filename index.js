@@ -148,7 +148,7 @@ var arraysweeper = {
 						this._board[ r ][ c ].state !== "revealed" &&
 						!this._board[ r ][ c ].bomb &&
 						pending.indexOf( r + "," + c ) === -1 &&
-						( r !== row || c!== col ) ) {
+						( r !== row || c !== col ) ) {
 					this._board[ r ][ c ].state = "";
 					pending.push( r + "," + c );
 				}

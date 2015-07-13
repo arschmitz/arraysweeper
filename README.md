@@ -1,4 +1,4 @@
-# ArraySweeper
+# Arraysweeper
 
 A module for creating an array based minesweeper game.
 
@@ -6,7 +6,7 @@ A module for creating an array based minesweeper game.
 
 * * *
 
-### ArraySweeper.module:ArraySweeper(height, width, count) 
+### Arraysweeper.module:Arraysweeper(height, width, count) 
 
 A module for creating an array based minesweeper game.
 
@@ -20,7 +20,7 @@ A module for creating an array based minesweeper game.
 
 
 
-### ArraySweeper.mineCount(row, col) 
+### Arraysweeper.mineCount(row, col) 
 
 Get the mine count for the current space
 
@@ -32,7 +32,7 @@ Get the mine count for the current space
 
 
 
-### ArraySweeper.flag(row, col, state) 
+### Arraysweeper.flag(row, col, state) 
 
 Get or set the flag status of the space
 
@@ -46,7 +46,7 @@ Get or set the flag status of the space
 
 
 
-### ArraySweeper.reveal(row, col) 
+### Arraysweeper.reveal(row, col) 
 
 Reveal the space
 
@@ -58,13 +58,13 @@ Reveal the space
 
 
 
-### ArraySweeper.render() 
+### Arraysweeper.render() 
 
 Render the board - This logs a textual representation to the console
 
 
 
-### ArraySweeper.getBoard() 
+### Arraysweeper.getBoard() 
 
 Get the board object - This should not be used by players only when implementing the api
 DONT CHEAT :-)
