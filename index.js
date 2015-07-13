@@ -3,22 +3,22 @@
 	if ( typeof define === "function" && define.amd ) {
 		/**
 		* A module for creating an array based minesweeper game.
-		* @module ArraySweeper
+		* @module Arraysweeper
 		*/
 		define( [], factory );
 	} else if ( typeof exports === "object" ) {
 		module.exports = factory();
 	} else {
-		root.ArraySweeper = factory();
+		root.Arraysweeper = factory();
   }
 }( this, function() {
 /**
-* @alias module:ArraySweeper
+* @alias module:Arraysweeper
 * @param {number} height - Height of the board to create.
 * @param {number} width - Width of the board to create.
 * @param {number} count - The number of mines to place on the board.
 */
-var ArraySweeper = function( height, width, count ) {
+var Arraysweeper = function( height, width, count ) {
 	this.height = height;
 	this.width = width;
 	this.count = count;
@@ -125,12 +125,16 @@ var arraysweeper = {
 		this._board[ row ][ col ].state = "revealed";
 		this.revealCount++;
 
-		for ( var r = row - 1 > 0 ? row - 1 : 0; r <= row + 1; r++ ) {
-			for ( var c = col - 1 > 0 ? col - 1 : 0; c <= col + 1; c++ ) {
+		for ( var r = row - 1 > 0 ? row - 1 : 0; r <= row + 1 && r < this.width; r++ ) {
+			for ( var c = col - 1 > 0 ? col - 1 : 0; c <= col + 1 && c < this.width; c++ ) {
+				console.log( row + ":" + col + " - " + r + "," + c );
+				console.log( col + 1 );
 				if ( r >= 0 && c >= 0 && r < this.height && c < this.width &&
 						this._board[ r ][ c ].count === 0 &&
 						this._board[ r ][ c ].state !== "revealed" &&
-						!this._board[ r ][ c ].bomb && pending.indexOf( r + "," + c ) === -1 ) {
+						!this._board[ r ][ c ].bomb &&
+						pending.indexOf( r + "," + c ) === -1 &&
+						( r !== row || c!== col ) ) {
 					this._board[ r ][ c ].state = "";
 					pending.push( r + "," + c );
 				}
@@ -139,8 +143,8 @@ var arraysweeper = {
 		if ( pending.length && pending.length >= current + 1 ) {
 			var parts = pending[ current ].split( "," );
 			this._reveal(
-				parts[ 0 ],
-				parts[ 1 ],
+				parseFloat( parts[ 0 ], 10 ),
+				parseFloat( parts[ 1 ], 10 ),
 				pending,
 				current + 1
 			);
@@ -181,9 +185,9 @@ var arraysweeper = {
 var keys = Object.keys( arraysweeper );
 
 for ( var i = 0; i < keys.length; i++ ) {
-	ArraySweeper.prototype[ keys[ i ] ] = arraysweeper[ keys[ i ] ];
+	Arraysweeper.prototype[ keys[ i ] ] = arraysweeper[ keys[ i ] ];
 }
 
-return ArraySweeper;
+return Arraysweeper;
 
 } ) );
