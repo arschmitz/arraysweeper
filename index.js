@@ -58,7 +58,7 @@ var arraysweeper = {
 		this.count.flags = this.count.flags + ( state ? 1 : -1 );
 		this.count.hidden = this.count.hidden - ( state ? 1 : -1 );
 		this._board[ row ][ col ].state = state ? "flag" : "hidden";
-		console.log( this.count.hidden );
+
 		if ( this.count.flags + this.count.hidden === this.count.mines ) {
 			return "You Win!";
 		}
@@ -78,9 +78,10 @@ var arraysweeper = {
 			return "Game Over!";
 		} else if ( space.bomb ) {
 			this._buildBoard();
-		} else if ( this.count.flags + this.count.hidden === this.count.mines ) {
+		} else if ( this.count.flags + this.count.hidden === this.count.mines + 1 ) {
 			returnValue = "You Win!";
 		}
+
 		this.count.moves++;
 		revealValue = this._reveal( row, col );
 		return returnValue || revealValue;
@@ -148,7 +149,7 @@ var arraysweeper = {
 						this._board[ r ][ c ].state !== "revealed" &&
 						!this._board[ r ][ c ].bomb &&
 						pending.indexOf( r + "," + c ) === -1 &&
-						( r !== row || c !== col ) ) {
+						( r !== row || c!== col ) ) {
 					this._board[ r ][ c ].state = "";
 					pending.push( r + "," + c );
 				}
