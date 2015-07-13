@@ -21,7 +21,13 @@
 var Arraysweeper = function( height, width, count ) {
 	this.height = height;
 	this.width = width;
-	this.count = count;
+	this.count = {
+		mines: count,
+		hidden: width * height,
+		moves: 0,
+		revealed: 0,
+		flags: 0
+	};
 	this._buildBoard();
 };
 var arraysweeper = {
@@ -47,10 +53,15 @@ var arraysweeper = {
 	*/
 	flag: function( row, col, state ) {
 		if ( state === undefined ) {
-			this.count.flag++;
 			return this._board[ row ][ col ].state === "flag";
 		}
+		this.count.flags = this.count.flags + ( state ? 1 : -1 );
+		this.count.hidden = this.count.hidden - ( state ? 1 : -1 );
 		this._board[ row ][ col ].state = state ? "flag" : "hidden";
+		console.log( this.count.hidden );
+		if ( this.count.flags + this.count.hidden === this.count.mines ) {
+			return "You Win!";
+		}
 	},
 
 	/**
@@ -59,16 +70,20 @@ var arraysweeper = {
 	* @param {number} col - The column number for the space.
 	*/
 	reveal: function( row, col ) {
+		var returnValue;
+		var revealValue;
 		var space = this._board[ row ][ col ];
 
-		if ( space.bomb ) {
+		if ( space.bomb && this.count.moves !== 0 ) {
 			return "Game Over!";
-		} else if ( this.count.flag + this.count.hidden === this.count.mine ) {
-			return "You Win!";
+		} else if ( space.bomb ) {
+			this._buildBoard();
+		} else if ( this.count.flags + this.count.hidden === this.count.mines ) {
+			returnValue = "You Win!";
 		}
-
 		this.count.moves++;
-		return this._reveal( row, col );
+		revealValue = this._reveal( row, col );
+		return returnValue || revealValue;
 	},
 
 	/**
@@ -97,7 +112,7 @@ var arraysweeper = {
 	},
 	_getMines: function() {
 		this.mines = [];
-		for ( var i = 0; i < this.count; i++ ) {
+		for ( var i = 0; i < this.count.mines; i++ ) {
 			var valid = false;
 			var mine;
 
@@ -123,12 +138,11 @@ var arraysweeper = {
 		current = current || 0;
 		pending = typeof pending === "object" ? pending : [];
 		this._board[ row ][ col ].state = "revealed";
-		this.revealCount++;
+		this.count.revealed++;
+		this.count.hidden--;
 
 		for ( var r = row - 1 > 0 ? row - 1 : 0; r <= row + 1 && r < this.width; r++ ) {
 			for ( var c = col - 1 > 0 ? col - 1 : 0; c <= col + 1 && c < this.width; c++ ) {
-				console.log( row + ":" + col + " - " + r + "," + c );
-				console.log( col + 1 );
 				if ( r >= 0 && c >= 0 && r < this.height && c < this.width &&
 						this._board[ r ][ c ].count === 0 &&
 						this._board[ r ][ c ].state !== "revealed" &&

@@ -1,5 +1,5 @@
 module.exports = {
 	readme: {
-		src: [ "index.md", "Gruntfile.md" ]
+		src: [ "gui.md", "Gruntfile.md" ]
 	}
 };
