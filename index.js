@@ -75,6 +75,7 @@ var arraysweeper = {
 		var space = this._board[ row ][ col ];
 
 		if ( space.bomb && this.count.moves !== 0 ) {
+			this._revealAll();
 			return "Game Over!";
 		} else if ( space.bomb ) {
 			this._buildBoard();
@@ -105,6 +106,14 @@ var arraysweeper = {
 	getBoard: function() {
 		return this._board;
 	},
+
+	_revealAll: function() {
+		for( var r = 0; r < this.height; r++ ) {
+			for( var c = 0; c < this.width; c++ ) {
+				this._board[ r ][ c ].state = "revealed";
+			}
+		}
+	}
 
 	_renderMap: function( space ) {
 		return space.state === "revealed" ?
