@@ -108,12 +108,12 @@ var arraysweeper = {
 	},
 
 	_revealAll: function() {
-		for( var r = 0; r < this.height; r++ ) {
-			for( var c = 0; c < this.width; c++ ) {
+		for ( var r = 0; r < this.height; r++ ) {
+			for ( var c = 0; c < this.width; c++ ) {
 				this._board[ r ][ c ].state = "revealed";
 			}
 		}
-	}
+	},
 
 	_renderMap: function( space ) {
 		return space.state === "revealed" ?
@@ -158,7 +158,7 @@ var arraysweeper = {
 						this._board[ r ][ c ].state !== "revealed" &&
 						!this._board[ r ][ c ].bomb &&
 						pending.indexOf( r + "," + c ) === -1 &&
-						( r !== row || c!== col ) ) {
+						( r !== row || c !== col ) ) {
 					this._board[ r ][ c ].state = "";
 					pending.push( r + "," + c );
 				}
